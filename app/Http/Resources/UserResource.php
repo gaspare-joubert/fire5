@@ -31,13 +31,18 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
-            'id'         => $this->id,
+        $data = [
             'name'       => $this->name,
             'email'      => $this->email,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'is_admin'   => $this->is_admin,
         ];
+
+        $currentUser = $request->user();
+        if ($currentUser && ($currentUser->id === $this->id || $currentUser->isAdmin())) {
+            $data['id'] = $this->id;
+            $data['is_admin'] = $this->is_admin;
+        }
+
+        return $data;
     }
 }

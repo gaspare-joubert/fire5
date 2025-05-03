@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Resources\UserResource;
 use App\Services\UserService;
@@ -105,5 +106,48 @@ class UserController extends Controller
     public function currentUser(Request $request): UserResource
     {
         return new UserResource($request->user());
+    }
+
+    /**
+     * Log in a user and return a token
+     */
+    public function login(LoginRequest $request): JsonResponse
+    {
+        $data = $request->validated();
+        $user = $this->userService->getByEmailAndPassword($data['email'], $data['password']);
+
+        if (!$user) {
+            return response()->json(
+                [
+                    'status'  => 'failed',
+                    'message' => __(
+                        'messages.user.account_not_found'
+                    ),
+                    'data'    => null
+                ],
+                401
+            );
+        }
+
+        // Revoke any existing tokens for this user
+        $user->tokens()->delete();
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json(
+            [
+                'status'  => 'success',
+                'message' => __(
+                    'messages.user.logged_in'
+                ),
+                'data'    => [
+                    'user'  => new UserResource(
+                        $user
+                    ),
+                    'token' => $token
+                ]
+            ],
+            200
+        );
     }
 }

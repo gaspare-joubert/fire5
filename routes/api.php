@@ -12,9 +12,12 @@ use App\Http\Controllers\Api\V1\UserController;
 
 // API routes
 Route::prefix('v1')->group(function () {
-    // User resource routes
-    Route::apiResource('users', UserController::class);
+    // Public auth routes
+    Route::post('login', [UserController::class, 'login']);
 
     // User authenticated routes
     Route::middleware('auth:sanctum')->get('/user', [UserController::class, 'currentUser']);
+
+    // User resource routes
+    Route::apiResource('users', UserController::class);
 });

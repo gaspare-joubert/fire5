@@ -43,6 +43,7 @@ return [
         'account_store_failed'         => 'Account creation failed',
         'account_not_found'            => 'Account not found',
         'created_failed'               => 'User not created',
+        'logged_in'                    => 'User logged in successfully',
     ],
 
     // Validation Messages
