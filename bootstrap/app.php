@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Auth\Middleware\Authenticate;
+use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
+use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -13,6 +16,22 @@ return Application::configure(basePath: dirname(__DIR__))->withRouting(
     $middleware->api(append: [
                                  EnsureFrontendRequestsAreStateful::class,
                              ]);
+
+    // Define middleware aliases
+    $middleware->alias([
+                           'auth'     => Authenticate::class,
+                           'guest'    => RedirectIfAuthenticated::class,
+                           'verified' => EnsureEmailIsVerified::class,
+                       ]);
+
+    // Add middleware groups specifically for user operations
+    $middleware->appendToGroup('user.guest', [
+        RedirectIfAuthenticated::class,
+    ]);
+
+    $middleware->appendToGroup('user.auth', [
+        Authenticate::class,
+    ]);
 })->withExceptions(function (Exceptions $exceptions) {
     //
 })->create();
