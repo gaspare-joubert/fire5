@@ -12,12 +12,22 @@ use App\Http\Controllers\Api\V1\UserController;
 
 // API routes
 Route::prefix('v1')->group(function () {
-    // Public auth routes
-    Route::post('login', [UserController::class, 'login']);
+    // Guest-only routes (must NOT be authenticated)
+    Route::middleware('guest')->group(function () {
+        // Auth routes
+        Route::post('login', [UserController::class, 'login']);
 
-    // User authenticated routes
-    Route::middleware('auth:sanctum')->get('/user', [UserController::class, 'currentUser']);
+        // User registration
+        Route::post('users', [UserController::class, 'store']);
+        Route::get('users/create', [UserController::class, 'create']);
+    });
 
-    // User resource routes
-    Route::apiResource('users', UserController::class);
+    // Protected routes (require authentication)
+    Route::middleware('auth:sanctum')->group(function () {
+        // Current user route
+        Route::get('/user', [UserController::class, 'currentUser']);
+
+        // Protected user resource routes (excluding store and create)
+        Route::apiResource('users', UserController::class)->except(['store', 'create']);
+    });
 });
