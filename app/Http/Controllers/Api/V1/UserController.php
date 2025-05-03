@@ -39,8 +39,21 @@ class UserController extends Controller
     public function store(UserStoreRequest $request): JsonResponse
     {
         $data = $request->validated();
-
         $user = $this->userService->store($data);
+
+        if (!$user) {
+            return response()->json(
+                [
+                    'status'  => 'failed',
+                    'message' => __('messages.user.created_failed'),
+                    'data'    => [
+                        'user'  => '',
+                        'token' => ''
+                    ]
+                ],
+                422
+            );
+        }
 
         // Generate token for API authentication
         $token = $user->createToken('auth_token')->plainTextToken;

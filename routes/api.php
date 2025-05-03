@@ -16,5 +16,5 @@ Route::prefix('v1')->group(function () {
     Route::apiResource('users', UserController::class);
 
     // User authenticated routes
-    Route::middleware('auth:sanctum')->get('/user', [UserController::class, 'currentUser']);;
+    Route::middleware('auth:sanctum')->get('/user', [UserController::class, 'currentUser']);
 });
