@@ -13,11 +13,11 @@
 
 <nav class="bg-white border-b border-gray-200 px-4 py-2.5 shadow-sm">
     <div class="container mx-auto flex flex-wrap justify-between items-center">
-        <a href="/" class="text-xl font-semibold text-blue-600">{{ __('messages.app_name') }}</a>
+        <a href="/" class="text-xl font-semibold text-blue-600 hover:underline hover:text-blue-800">{{ __('messages.app_name') }}</a>
         @auth
             <form method="POST" action="{{ route('web.users.logout') }}" class="inline">
                 @csrf
-                <button type="submit" class="text-xl font-semibold text-blue-600">
+                <button type="submit" class="text-xl font-semibold text-blue-600 hover:underline hover:text-blue-800 cursor-pointer">
                     {{ __('messages.logout') }}
                 </button>
             </form>
