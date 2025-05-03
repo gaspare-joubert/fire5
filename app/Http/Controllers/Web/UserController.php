@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\UserStoreRequest;
 use App\Services\UserService;
 use Illuminate\Contracts\Foundation\Application;
@@ -11,6 +12,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
@@ -53,20 +55,36 @@ class UserController extends Controller
     public function store(UserStoreRequest $request): RedirectResponse
     {
         $data = $request->validated();
-
         $user = $this->userService->store($data);
+
+        if (!$user) {
+            return redirect()->back()->withInput()->with('error', __('messages.user.account_store_failed'));
+        }
 
         auth()->login($user);
 
-        return redirect()->route('dashboard')->with('success', __('messages.user.account_successfully_created'));
+        if (Gate::allows('admin')) {
+            return redirect()->route('admin.users.index');
+        }
+
+        return redirect()->route('web.users.show', ['id' => auth()->id()]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(int|null|string $id): View|Application|Factory
     {
+        $user = $this->userService->getById($id);
 
+        if (!$user) {
+            abort(404);
+        }
+
+        /** @var view-string $viewPath */
+        $viewPath = 'users.show';
+
+        return view($viewPath, ['user' => $user]);
     }
 
     /**
@@ -104,5 +122,26 @@ class UserController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    /**
+     * Log the user in to the application.
+     */
+    public function login(LoginRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+        $user = $this->userService->getByEmailAndPassword($data['email'], $data['password']);
+
+        if (!$user) {
+            return redirect()->back()->withInput()->with('error', __('messages.user.account_not_found'));
+        }
+
+        auth()->login($user);
+
+        if (Gate::allows('admin')) {
+            return redirect()->route('admin.users.index');
+        }
+
+        return redirect()->route('web.users.show', ['id' => auth()->id()]);
     }
 }
