@@ -18,6 +18,23 @@ export default defineConfig({
         hmr: {
             host: 'localhost',
             protocol: 'ws',
+            // Add timeout to prevent hanging connections
+            timeout: 60000,
         },
+        // Improve file watching
+        watch: {
+            usePolling: true,
+            interval: 1000,
+        },
+        // Increase memory limit
+        fs: {
+            strict: false,
+        }
+    },
+    build: {
+        // Minimize CSS in production
+        cssMinify: true,
+        // Improve chunk loading
+        chunkSizeWarningLimit: 1000,
     },
 });
