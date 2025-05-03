@@ -40,6 +40,8 @@ return [
         'account_details'              => 'Account Details',
         'account_edit'                 => 'Edit Account',
         'account_not_already'          => 'Don’t have an account yet?',
+        'account_store_failed'         => 'Account creation failed',
+        'account_not_found'            => 'Account not found',
     ],
 
     // Validation Messages

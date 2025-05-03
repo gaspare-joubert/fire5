@@ -31,4 +31,27 @@ class UserService
             ]
         );
     }
+
+    /**
+     * Get a user by email and password.
+     */
+    public function getByEmailAndPassword(string $email, string $password): ?User
+    {
+        try {
+            $user = User::where('email', $email)->first();
+
+            if ($user && Hash::check($password, $user->password)) {
+                return $user;
+            }
+
+            return null;
+        } catch (\Exception $e) {
+            Log::error('Failed to retrieve user', [
+                'email'     => $email,
+                'exception' => $e->getMessage()
+            ]);
+
+            return null;
+        }
+    }
 }
