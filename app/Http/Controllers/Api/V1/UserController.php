@@ -32,17 +32,6 @@ class UserController extends Controller
      */
     public function index(): JsonResponse
     {
-        // Check if the user is authorized as admin
-        if (!Gate::allows('admin')) {
-            return response()->json(
-                [
-                    'status'  => __('messages.status_error'),
-                    'message' => __('messages.user.access_unauthorized'),
-                ],
-                403
-            );
-        }
-
         // Get users from service
         $users = $this->userService->getAllUsers();
 

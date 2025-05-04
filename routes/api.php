@@ -29,5 +29,10 @@ Route::prefix('v1')->group(function () {
 
         // Protected user resource routes (excluding store and create)
         Route::apiResource('users', UserController::class)->except(['store', 'create']);
+
+        // Admin routes
+        Route::middleware(['user.admin'])->prefix('admin')->group(function () {
+            Route::get('users', [UserController::class, 'index']);
+        });
     });
 });
