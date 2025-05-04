@@ -18,6 +18,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property-read string $email
  * @property-read string $created_at
  * @property-read string $updated_at
+ * @property-read bool $is_admin
  */
 class UserResource extends JsonResource
 {
@@ -30,12 +31,18 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
-            'id'         => $this->id,
+        $data = [
             'name'       => $this->name,
             'email'      => $this->email,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
         ];
+
+        $currentUser = $request->user();
+        if ($currentUser && ($currentUser->id === $this->id || $currentUser->isAdmin())) {
+            $data['id'] = $this->id;
+            $data['is_admin'] = $this->is_admin;
+        }
+
+        return $data;
     }
 }

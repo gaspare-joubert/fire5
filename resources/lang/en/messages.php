@@ -27,6 +27,11 @@ return [
     'login_here'               => 'Login Here',
     'required_field_indicator' => '*',
     'login_to_your_account'    => 'Login to your account',
+    'status_error'             => 'error',
+    'status_success'           => 'success',
+    'actions'                  => 'Actions',
+    'view'                     => 'View',
+    'edit'                     => 'Edit',
 
     // User Controller Messages
     'user'                     => [
@@ -42,6 +47,12 @@ return [
         'account_not_already'          => 'Don’t have an account yet?',
         'account_store_failed'         => 'Account creation failed',
         'account_not_found'            => 'Account not found',
+        'created_failed'               => 'User not created',
+        'logged_in'                    => 'User logged in successfully',
+        'access_unauthorized'          => 'Unauthorized access',
+        'not_found_users'              => 'Failed to retrieve users',
+        'action_unauthorized'          => 'Unauthorized action',
+        'all_users'                    => 'Users',
     ],
 
     // Validation Messages

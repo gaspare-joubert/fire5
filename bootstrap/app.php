@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AdminAccess;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
 use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
@@ -22,6 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))->withRouting(
                            'auth'     => Authenticate::class,
                            'guest'    => RedirectIfAuthenticated::class,
                            'verified' => EnsureEmailIsVerified::class,
+                           'admin'    => AdminAccess::class,
                        ]);
 
     // Add middleware groups specifically for user operations
@@ -31,6 +33,10 @@ return Application::configure(basePath: dirname(__DIR__))->withRouting(
 
     $middleware->appendToGroup('user.auth', [
         Authenticate::class,
+    ]);
+
+    $middleware->appendToGroup('user.admin', [
+        AdminAccess::class,
     ]);
 })->withExceptions(function (Exceptions $exceptions) {
     //

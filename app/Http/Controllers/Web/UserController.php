@@ -33,9 +33,19 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View|Application|Factory
     {
-        //
+        // Get users from service
+        $users = $this->userService->getAllUsers();
+
+        if (!$users) {
+            abort(404);
+        }
+
+        /** @var view-string $viewPath */
+        $viewPath = 'admin.users.index';
+
+        return view($viewPath, ['users' => $users]);
     }
 
     /**
@@ -139,7 +149,23 @@ class UserController extends Controller
         auth()->login($user);
 
         if (Gate::allows('admin')) {
-            return redirect()->route('admin.users.index');
+            return redirect()->route('web.admin.users.index');
+        }
+
+        return redirect()->route('web.users.show', ['id' => auth()->id()]);
+    }
+
+    /**
+     * Direct users on the home page.
+     */
+    public function home(): View|Application|Factory|RedirectResponse
+    {
+        if (!auth()->check()) {
+            return view('users.login');
+        }
+
+        if (Gate::allows('admin')) {
+            return redirect()->route('web.admin.users.index');
         }
 
         return redirect()->route('web.users.show', ['id' => auth()->id()]);

@@ -10,6 +10,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
@@ -74,6 +75,23 @@ class UserService
             Log::error('Failed to retrieve user', [
                 'email'     => $email,
                 'exception' => $e->getMessage()
+            ]);
+
+            return null;
+        }
+    }
+
+    /**
+     * Get all users with pagination
+     */
+    public function getAllUsers(int $perPage = 15): ?LengthAwarePaginator
+    {
+        try {
+            return User::paginate($perPage);
+        } catch (\Exception $e) {
+            Log::error('Failed to retrieve users', [
+                'exception' => $e->getMessage(),
+                'perPage'   => $perPage,
             ]);
 
             return null;

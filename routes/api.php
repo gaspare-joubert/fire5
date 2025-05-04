@@ -10,11 +10,29 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\UserController;
 
-// API routes
+// API V1 routes
 Route::prefix('v1')->group(function () {
-    // User resource routes
-    Route::apiResource('users', UserController::class);
+    // Guest routes group
+    Route::middleware('guest')->group(function () {
+        // Auth routes
+        Route::post('login', [UserController::class, 'login']);
 
-    // User authenticated routes
-    Route::middleware('auth:sanctum')->get('/user', [UserController::class, 'currentUser']);;
+        // User registration
+        Route::post('users', [UserController::class, 'store']);
+        Route::get('users/create', [UserController::class, 'create']);
+    });
+
+    // Protected routes group
+    Route::middleware('auth:sanctum')->group(function () {
+        // Current user route
+        Route::get('/user', [UserController::class, 'currentUser']);
+
+        // Protected user resource routes (excluding store and create)
+        Route::apiResource('users', UserController::class)->except(['store', 'create']);
+
+        // Admin routes
+        Route::middleware(['user.admin'])->prefix('admin')->group(function () {
+            Route::get('users', [UserController::class, 'index']);
+        });
+    });
 });
