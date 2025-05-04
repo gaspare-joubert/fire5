@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\UserRequest;
 use App\Http\Requests\UserStoreRequest;
 use App\Services\UserService;
 use Illuminate\Contracts\Foundation\Application;
@@ -100,17 +101,88 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(int|null|string $id): View|Application|Factory|RedirectResponse
     {
-        //
+        $user = $this->userService->getById($id);
+
+        if (!$user) {
+            return redirect()->back()->with('error', __('messages.user.not_found_users'));
+        }
+
+        $address = $user->address;
+        $contacts = $user->contacts;
+        $files = $user->files;
+
+        /** @var view-string $viewPath */
+        $viewPath = 'users.edit';
+
+        return view($viewPath, ['user' => $user, 'address' => $address, 'contacts' => $contacts, 'files' => $files]);
     }
 
     /**
      * Update the specified resource in storage.
+     * Handles both PUT (full update) and PATCH (partial update).
      */
-    public function update(Request $request, string $id)
+    public function update(UserRequest $request, string $id)
     {
-        //
+        // Check authorization
+        $currentUser = $request->user();
+        $isOwnRecord = $currentUser->id == $id;
+        $isAdmin = $currentUser->isAdmin();
+
+        if (!$isOwnRecord && !$isAdmin) {
+            {
+                return redirect()->back()->withInput()->with(
+                    'error',
+                    __(
+                        'messages.user.access_unauthorized'
+                    )
+                );
+            }
+        }
+
+        // Get validated data
+        $data = $request->validated();
+
+        // If not admin, restrict fields
+        if (!$isAdmin) {
+            $data = array_diff_key(
+                $data,
+                array_flip(
+                    [
+                        'email_verified_at',
+                        'is_admin',
+                        'remember_token',
+                        'created_at',
+                        'updated_at'
+                    ]
+                )
+            );
+        }
+
+        // Update user via the service
+        $user = $this->userService->update($id, $data);
+
+        if (!$user) {
+            return redirect()->back()->withInput()->with(
+                'error',
+                __(
+                    'messages.user.update_failed'
+                )
+            );
+        }
+
+        if ($isAdmin) {
+            return redirect()->route('web.admin.users.index')->with(
+                'success',
+                __('messages.user.updated')
+            );
+        } else {
+            return redirect()->route('web.users.show', ['id' => $id])->with(
+                'success',
+                __('messages.user.updated')
+            );
+        }
     }
 
     /**

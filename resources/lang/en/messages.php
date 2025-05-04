@@ -32,6 +32,17 @@ return [
     'actions'                  => 'Actions',
     'view'                     => 'View',
     'edit'                     => 'Edit',
+    'save'                     => 'Save',
+    'cancel'                   => 'Cancel',
+    'address_line_1'           => 'Address Line 1',
+    'address_line_2'           => 'Address Line 2 (Optional)',
+    'city'                     => 'City',
+    'postcode'                 => 'Postcode',
+    'contact_number'           => 'Contact Number',
+    'contacts'                 => 'Contacts',
+    'mime_type'                => 'File Type',
+    'size'                     => 'Size',
+    'files'                    => 'Files',
 
     // User Controller Messages
     'user'                     => [
@@ -44,7 +55,7 @@ return [
         'account_already'              => 'Already have an account?',
         'account_details'              => 'Account Details',
         'account_edit'                 => 'Edit Account',
-        'account_not_already'          => 'Don’t have an account yet?',
+        'account_not_already'          => 'Don\'t have an account yet?',
         'account_store_failed'         => 'Account creation failed',
         'account_not_found'            => 'Account not found',
         'created_failed'               => 'User not created',
@@ -53,6 +64,7 @@ return [
         'not_found_users'              => 'Failed to retrieve users',
         'action_unauthorized'          => 'Unauthorized action',
         'all_users'                    => 'Users',
+        'update_failed'                => 'User update failed',
     ],
 
     // Validation Messages

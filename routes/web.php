@@ -25,6 +25,9 @@ Route::middleware(['user.auth'])->group(function () {
     // Explicit user show route
     Route::get('/users/{id}', [UserController::class, 'show'])->name('web.users.show');
 
+    // Explicit user update route
+    Route::match(['put', 'patch'], '/users/{id}', [UserController::class, 'update'])->name('web.users.update');
+
     // Logout route
     Route::post('/logout', [UserController::class, 'logout'])->name('web.users.logout');
 

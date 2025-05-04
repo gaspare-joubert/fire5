@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\UserRequest;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Resources\UserResource;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
@@ -112,10 +112,81 @@ class UserController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * Handles both PUT (full update) and PATCH (partial update).
      */
-    public function update(Request $request, string $id)
+    public function update(UserRequest $request, string $id)
     {
-        //
+        // Check authorization
+        $currentUser = $request->user();
+        $isOwnRecord = $currentUser->id == $id;
+        $isAdmin = $currentUser->isAdmin();
+
+        if (!$isOwnRecord && !$isAdmin) {
+            return response()->json(
+                [
+                    'status'  => __(
+                        'messages.status_error'
+                    ),
+                    'message' => __(
+                        'messages.user.access_unauthorized'
+                    )
+                ],
+                403
+            );
+        }
+
+        // Get validated data
+        $data = $request->validated();
+
+        // If not admin, restrict fields
+        if (!$isAdmin) {
+            $data = array_diff_key(
+                $data,
+                array_flip(
+                    [
+                        'email_verified_at',
+                        'is_admin',
+                        'remember_token',
+                        'created_at',
+                        'updated_at'
+                    ]
+                )
+            );
+        }
+
+        // Update user via the service
+        $user = $this->userService->update($id, $data);
+
+        if (!$user) {
+            return response()->json(
+                [
+                    'status'  => __(
+                        'messages.status_error'
+                    ),
+                    'message' => __(
+                        'messages.user.update_failed'
+                    )
+                ],
+                422
+            );
+        }
+
+        return response()->json(
+            [
+                'status'  => __(
+                    'messages.status_success'
+                ),
+                'message' => __(
+                    'messages.user.updated'
+                ),
+                'data'    => [
+                    'user' => new UserResource(
+                        $user
+                    )
+                ]
+            ],
+            200
+        );
     }
 
     /**

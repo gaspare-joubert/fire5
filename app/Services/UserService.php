@@ -10,6 +10,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -34,7 +35,7 @@ class UserService
 
             Log::error('Failed to create user', [
                 'data'      => $safeData,
-                'exception' => $e->getMessage()
+                'exception' => $e->getMessage(),
             ]);
 
             return null;
@@ -47,11 +48,11 @@ class UserService
     public function getById(int|null|string $id): ?User
     {
         try {
-            return User::findOrFail($id);
+            return User::with(['address', 'contacts', 'files'])->findOrFail($id);
         } catch (\Exception $e) {
             Log::error('Failed to retrieve user', [
                 'id'        => $id,
-                'exception' => $e->getMessage()
+                'exception' => $e->getMessage(),
             ]);
 
             return null;
@@ -74,7 +75,7 @@ class UserService
         } catch (\Exception $e) {
             Log::error('Failed to retrieve user', [
                 'email'     => $email,
-                'exception' => $e->getMessage()
+                'exception' => $e->getMessage(),
             ]);
 
             return null;
@@ -90,11 +91,63 @@ class UserService
             return User::paginate($perPage);
         } catch (\Exception $e) {
             Log::error('Failed to retrieve users', [
-                'exception' => $e->getMessage(),
                 'perPage'   => $perPage,
+                'exception' => $e->getMessage(),
             ]);
 
             return null;
+        }
+    }
+
+    /**
+     * Update the specified user with an array of field-value pairs.
+     *
+     * @param array $data Associative array of field-value pairs to update
+     */
+    public function update(string $id, array $data): ?User
+    {
+        try {
+            $user = User::with(['address'])->findOrFail($id);
+
+            // Handle special fields that need processing before update
+            $this->processSpecialFields($data);
+
+            // Perform the update with all field-value pairs
+            $user->update($data);
+            $user->address?->update($data);
+
+            // Refresh the model to get the latest data
+            $user->refresh();
+
+            return $user;
+
+        } catch (ModelNotFoundException|\Exception $e) {
+            if ($e instanceof ModelNotFoundException) {
+                Log::info('User not found during update: ', [
+                    'user_id' => $id,
+                ]);
+            } else {
+                // Create a safe version of data without the password
+                $safeData = $data;
+                unset($safeData['password']);
+
+                Log::error('Failed to update user', [
+                    'data'      => $safeData,
+                    'exception' => $e->getMessage(),
+                ]);
+            }
+
+            return null;
+        }
+    }
+
+    /**
+     * Process special fields that need transformation before update.
+     */
+    private function processSpecialFields(array &$data): void
+    {
+        if (isset($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
         }
     }
 }
