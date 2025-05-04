@@ -144,4 +144,20 @@ class UserController extends Controller
 
         return redirect()->route('web.users.show', ['id' => auth()->id()]);
     }
+
+    /**
+     * Direct users on the home page.
+     */
+    public function home(): View|Application|Factory|RedirectResponse
+    {
+        if (!auth()->check()) {
+            return view('users.login');
+        }
+
+        if (Gate::allows('admin')) {
+            return redirect()->route('admin.users.index');
+        }
+
+        return redirect()->route('web.users.show', ['id' => auth()->id()]);
+    }
 }

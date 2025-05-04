@@ -10,9 +10,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\UserController;
 
-// API routes
+// API V1 routes
 Route::prefix('v1')->group(function () {
-    // Guest-only routes (must NOT be authenticated)
+    // Guest routes group
     Route::middleware('guest')->group(function () {
         // Auth routes
         Route::post('login', [UserController::class, 'login']);
@@ -22,7 +22,7 @@ Route::prefix('v1')->group(function () {
         Route::get('users/create', [UserController::class, 'create']);
     });
 
-    // Protected routes (require authentication)
+    // Protected routes group
     Route::middleware('auth:sanctum')->group(function () {
         // Current user route
         Route::get('/user', [UserController::class, 'currentUser']);
