@@ -48,6 +48,7 @@ return [
         'logged_in'                    => 'User logged in successfully',
         'access_unauthorized'          => 'Unauthorized access',
         'not_found_users'              => 'Failed to retrieve users',
+        'action_unauthorized'          => 'Unauthorized action',
     ],
 
     // Validation Messages
