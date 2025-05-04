@@ -26,4 +26,9 @@ Route::middleware(['user.auth'])->group(function () {
 
     // Logout route
     Route::post('/logout', [UserController::class, 'logout'])->name('web.users.logout');
+
+    // Admin routes
+    Route::middleware(['user.admin'])->prefix('admin')->group(function () {
+        Route::get('users', [UserController::class, 'index'])->name('web.admin.users.index');
+    });
 });

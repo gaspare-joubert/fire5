@@ -29,6 +29,9 @@ return [
     'login_to_your_account'    => 'Login to your account',
     'status_error'             => 'error',
     'status_success'           => 'success',
+    'actions'                  => 'Actions',
+    'view'                     => 'View',
+    'edit'                     => 'Edit',
 
     // User Controller Messages
     'user'                     => [
@@ -49,6 +52,7 @@ return [
         'access_unauthorized'          => 'Unauthorized access',
         'not_found_users'              => 'Failed to retrieve users',
         'action_unauthorized'          => 'Unauthorized action',
+        'all_users'                    => 'Users',
     ],
 
     // Validation Messages
