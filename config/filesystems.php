@@ -60,6 +60,13 @@ return [
             'report' => false,
         ],
 
+        'secure' => [
+            'driver' => 'local',
+            'root' => storage_path('app/secure'),
+            'url' => env('APP_URL').'/secure',
+            'visibility' => 'private',
+        ],
+
     ],
 
     /*

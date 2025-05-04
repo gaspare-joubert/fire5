@@ -62,4 +62,15 @@ return [
         'min'       => 'The :attribute must be at least :min characters',
         'confirmed' => 'The :attribute confirmation does not match',
     ],
+
+    // File Controller Messages
+    'file'                     => [
+        'created'         => 'File created successfully',
+        'updated'         => 'File updated successfully',
+        'deleted'         => 'File deleted successfully',
+        'not_found'       => 'File not found',
+        'store_failed'    => 'File creation failed',
+        'store_success'   => 'File creation successful',
+        'not_found_files' => 'Failed to retrieve files',
+    ],
 ];

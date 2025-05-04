@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Web\FileController;
 use App\Http\Controllers\Web\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,4 +32,7 @@ Route::middleware(['user.auth'])->group(function () {
     Route::middleware(['user.admin'])->prefix('admin')->group(function () {
         Route::get('users', [UserController::class, 'index'])->name('web.admin.users.index');
     });
+
+    // File routes
+    Route::post('/files/upload', [FileController::class, 'store'])->name('files.upload');
 });
