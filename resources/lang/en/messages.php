@@ -43,6 +43,7 @@ return [
     'mime_type'                => 'File Type',
     'size'                     => 'Size',
     'files'                    => 'Files',
+    'bytes'                    => 'bytes',
 
     // User Controller Messages
     'user'                     => [
@@ -73,6 +74,14 @@ return [
         'email'     => 'The :attribute must be a valid email address',
         'min'       => 'The :attribute must be at least :min characters',
         'confirmed' => 'The :attribute confirmation does not match',
+        'files'     => [
+            'required'      => 'Please select at least one file to upload.',
+            'array'         => 'An error occurred while uploading the file.',
+            'item_required' => 'An error occurred while uploading the file.',
+            'file'          => 'Each uploaded item must be a valid file.',
+            'mimetypes'     => 'Files must be PDF, JPEG, Text, or PNG format only.',
+            'max'           => 'Files cannot be larger than 10MB.',
+        ],
     ],
 
     // File Controller Messages
@@ -82,7 +91,11 @@ return [
         'deleted'         => 'File deleted successfully',
         'not_found'       => 'File not found',
         'store_failed'    => 'File creation failed',
-        'store_success'   => 'File creation successful',
+        'store_success'   => 'File uploaded successfully',
         'not_found_files' => 'Failed to retrieve files',
+        'upload'          => 'Upload File',
+        'upload_button'   => 'Upload',
+        'upload_error'    => 'An error occurred while uploading the file',
+        'allowed_types'   => 'PDF, TEXT, DOC, DOCX, XLS, XLSX up to 10MB',
     ],
 ];

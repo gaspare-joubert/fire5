@@ -28,7 +28,23 @@ class FileStoreRequest extends FormRequest
     {
         return [
             'files'   => 'required|array',
-            'files.*' => 'required|file|mimetypes:application/pdf,image/jpeg,image/png|max:10240',
+            'files.*' => 'required|file|mimetypes:application/pdf,image/jpeg,image/png,text/plain|max:10240',
         ];
     }
+
+    /**
+     * Get custom messages for validator errors.
+     */
+    public function messages(): array
+    {
+        return [
+            'files.required'    => __('messages.validation.files.required'),
+            'files.array'       => __('messages.validation.files.array'),
+            'files.*.required'  => __('messages.validation.files.item_required'),
+            'files.*.file'      => __('messages.validation.files.file'),
+            'files.*.mimetypes' => __('messages.validation.files.mimetypes'),
+            'files.*.max'       => __('messages.validation.files.max'),
+        ];
+    }
+
 }
