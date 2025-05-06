@@ -114,7 +114,12 @@ class UserService
 
             // Perform the update with all field-value pairs
             $user->update($data);
-            $user->address?->update($data);
+            if ($user->address) {
+                $user->address->update($data);
+            } else {
+                // Create a new address for the user
+                $user->address()->create($data);
+            }
 
             // Refresh the model to get the latest data
             $user->refresh();

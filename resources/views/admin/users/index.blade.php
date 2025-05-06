@@ -48,7 +48,7 @@
                                         </td>
                                         <td class="px-6 py-4">
                                             <a href="{{ route('web.users.show', $user->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline mr-2">{{ __('messages.view') }}</a>
-                                            <a href="{{ route('users.edit', $user->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">{{ __('messages.edit') }}</a>
+                                            <a href="{{ route('web.users.edit', $user->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">{{ __('messages.edit') }}</a>
                                         </td>
                                     </tr>
                                 @endforeach
