@@ -19,20 +19,23 @@ Route::middleware(['user.guest'])->group(function () {
 
 // Authenticated user routes group
 Route::middleware(['user.auth'])->group(function () {
-    // User resource routes (excluding create and store which are for guests)
-    Route::resource('users', UserController::class)->except(['create', 'store']);
-
-    // Explicit user show route
-    Route::get('/users/{id}', [UserController::class, 'show'])->name('web.users.show');
-
-    // Logout route
+    // Routes accessible to any authenticated user (no ownership check needed)
     Route::post('/logout', [UserController::class, 'logout'])->name('web.users.logout');
+
+    // File routes
+    Route::post('/files/upload', [FileController::class, 'store'])->name('files.upload');
 
     // Admin routes
     Route::middleware(['user.admin'])->prefix('admin')->group(function () {
         Route::get('users', [UserController::class, 'index'])->name('web.admin.users.index');
     });
 
-    // File routes
-    Route::post('/files/upload', [FileController::class, 'store'])->name('files.upload');
+    // User routes with ownership check
+    Route::middleware(['user.ownership'])->group(function () {
+        // Explicit user routes with custom names
+        Route::get('/users/{id}', [UserController::class, 'show'])->name('web.users.show');
+        Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('web.users.edit');
+        Route::match(['put', 'patch'], '/users/{id}', [UserController::class, 'update'])->name('web.users.update');
+        Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('web.users.destroy');
+    });
 });

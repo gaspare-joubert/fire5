@@ -32,6 +32,18 @@ return [
     'actions'                  => 'Actions',
     'view'                     => 'View',
     'edit'                     => 'Edit',
+    'save'                     => 'Save',
+    'cancel'                   => 'Cancel',
+    'address_line_1'           => 'Address Line 1',
+    'address_line_2'           => 'Address Line 2 (Optional)',
+    'city'                     => 'City',
+    'postcode'                 => 'Postcode',
+    'contact_number'           => 'Contact Number',
+    'contacts'                 => 'Contacts',
+    'mime_type'                => 'File Type',
+    'size'                     => 'Size',
+    'files'                    => 'Files',
+    'bytes'                    => 'bytes',
 
     // User Controller Messages
     'user'                     => [
@@ -44,7 +56,7 @@ return [
         'account_already'              => 'Already have an account?',
         'account_details'              => 'Account Details',
         'account_edit'                 => 'Edit Account',
-        'account_not_already'          => 'Don’t have an account yet?',
+        'account_not_already'          => 'Don\'t have an account yet?',
         'account_store_failed'         => 'Account creation failed',
         'account_not_found'            => 'Account not found',
         'created_failed'               => 'User not created',
@@ -53,6 +65,7 @@ return [
         'not_found_users'              => 'Failed to retrieve users',
         'action_unauthorized'          => 'Unauthorized action',
         'all_users'                    => 'Users',
+        'update_failed'                => 'User update failed',
     ],
 
     // Validation Messages
@@ -61,6 +74,14 @@ return [
         'email'     => 'The :attribute must be a valid email address',
         'min'       => 'The :attribute must be at least :min characters',
         'confirmed' => 'The :attribute confirmation does not match',
+        'files'     => [
+            'required'      => 'Please select at least one file to upload.',
+            'array'         => 'An error occurred while uploading the file.',
+            'item_required' => 'An error occurred while uploading the file.',
+            'file'          => 'Each uploaded item must be a valid file.',
+            'mimetypes'     => 'Files must be PDF, JPEG, Text, or PNG format only.',
+            'max'           => 'Files cannot be larger than 10MB.',
+        ],
     ],
 
     // File Controller Messages
@@ -70,7 +91,11 @@ return [
         'deleted'         => 'File deleted successfully',
         'not_found'       => 'File not found',
         'store_failed'    => 'File creation failed',
-        'store_success'   => 'File creation successful',
+        'store_success'   => 'File uploaded successfully',
         'not_found_files' => 'Failed to retrieve files',
+        'upload'          => 'Upload File',
+        'upload_button'   => 'Upload',
+        'upload_error'    => 'An error occurred while uploading the file',
+        'allowed_types'   => 'PDF, TEXT, DOC, DOCX, XLS, XLSX up to 10MB',
     ],
 ];

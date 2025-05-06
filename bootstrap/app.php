@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\AdminAccess;
+use App\Http\Middleware\UserOwnershipCheck;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
 use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
@@ -20,10 +21,11 @@ return Application::configure(basePath: dirname(__DIR__))->withRouting(
 
     // Define middleware aliases
     $middleware->alias([
-                           'auth'     => Authenticate::class,
-                           'guest'    => RedirectIfAuthenticated::class,
-                           'verified' => EnsureEmailIsVerified::class,
-                           'admin'    => AdminAccess::class,
+                           'auth'           => Authenticate::class,
+                           'guest'          => RedirectIfAuthenticated::class,
+                           'verified'       => EnsureEmailIsVerified::class,
+                           'admin'          => AdminAccess::class,
+                           'user.ownership' => UserOwnershipCheck::class,
                        ]);
 
     // Add middleware groups specifically for user operations
@@ -37,6 +39,10 @@ return Application::configure(basePath: dirname(__DIR__))->withRouting(
 
     $middleware->appendToGroup('user.admin', [
         AdminAccess::class,
+    ]);
+
+    $middleware->appendToGroup('user.ownership', [
+        UserOwnershipCheck::class,
     ]);
 })->withExceptions(function (Exceptions $exceptions) {
     //
