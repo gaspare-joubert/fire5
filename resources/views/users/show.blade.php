@@ -32,7 +32,7 @@
                             <p class="text-base font-medium text-gray-900 dark:text-white">{{ $user->email }}</p>
                         </div>
                         <div class="pt-4">
-                            <a href="{{ route('users.edit',['user'=>$user->id]) }}" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-block dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">{{ __('messages.user.account_edit') }}</a>
+                            <a href="{{ route('web.users.edit',['id'=>$user->id]) }}" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-block dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">{{ __('messages.user.account_edit') }}</a>
                         </div>
                     </div>
                 </div>

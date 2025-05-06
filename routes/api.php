@@ -24,16 +24,18 @@ Route::prefix('v1')->group(function () {
 
     // Protected routes group
     Route::middleware('auth:sanctum')->group(function () {
-        // Current user route
+        // Current user route - any authenticated user can access their own info
         Route::get('/user', [UserController::class, 'currentUser']);
-
-        // Protected user resource routes (excluding store and create)
-        Route::apiResource('users', UserController::class)->except(['store', 'create']);
 
         // Admin routes
         Route::middleware(['user.admin'])->prefix('admin')->group(function () {
             Route::get('users', [UserController::class, 'index']);
             Route::patch('users/{id}', [UserController::class, 'update']);
+        });
+
+        // User resource routes with ownership check
+        Route::middleware(['user.ownership'])->group(function () {
+            Route::apiResource('users', UserController::class)->except(['store', 'create', 'index']);
         });
     });
 });

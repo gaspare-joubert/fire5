@@ -125,21 +125,7 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, string $id)
     {
-        // Check authorization
-        $currentUser = $request->user();
-        $isOwnRecord = $currentUser->id == $id;
-        $isAdmin = $currentUser->isAdmin();
-
-        if (!$isOwnRecord && !$isAdmin) {
-            {
-                return redirect()->back()->withInput()->with(
-                    'error',
-                    __(
-                        'messages.user.access_unauthorized'
-                    )
-                );
-            }
-        }
+        $isAdmin = $request->user()->isAdmin();
 
         // Get validated data
         $data = $request->validated();
