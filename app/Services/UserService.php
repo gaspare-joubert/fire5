@@ -117,7 +117,17 @@ class UserService
     public function update(string $id, array $data): ?User
     {
         try {
-            $user = User::with(['address'])->findOrFail($id);
+            $user = User::with(
+                [
+                    'address',
+                    'contacts' => function ($query) {
+                        $query->orderBy('name', 'asc');
+                    },
+                    'files'    => function ($query) {
+                        $query->orderBy('original_name', 'asc');
+                    }
+                ]
+            )->findOrFail($id);
 
             // Handle special fields that need processing before update
             $this->processSpecialFields($data);
@@ -130,9 +140,6 @@ class UserService
                 // Create a new address for the user
                 $user->address()->create($data);
             }
-
-            // Refresh the model to get the latest data
-            $user->refresh();
 
             return $user;
 

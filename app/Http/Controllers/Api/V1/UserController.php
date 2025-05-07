@@ -170,9 +170,7 @@ class UserController extends Controller
                     'messages.user.updated'
                 ),
                 'data'    => [
-                    'user' => new UserResource(
-                        $user
-                    )
+                    'user' => new UserResourceCollection([$user]),
                 ]
             ],
             200
