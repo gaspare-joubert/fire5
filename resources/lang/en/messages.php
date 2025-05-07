@@ -98,4 +98,12 @@ return [
         'upload_error'    => 'An error occurred while uploading the file',
         'allowed_types'   => 'PDF, TEXT, DOC, DOCX, XLS, XLSX up to 10MB',
     ],
+
+    // Resource Processing Messages
+    'resource'                 => [
+        'address_load_error' => 'Unable to load address data',
+        'process_error'      => 'Error processing resource',
+        'collection_error'   => 'Some resources could not be processed',
+        'contacts_load_error' => 'Unable to load contacts data',
+    ],
 ];

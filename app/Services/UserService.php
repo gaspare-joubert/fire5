@@ -28,7 +28,7 @@ class UserService
                                     'email'    => $data['email'],
                                     'password' => Hash::make($data['password']),
                                 ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             // Create a safe version of data without the password
             $safeData = $data;
             unset($safeData['password']);
@@ -49,7 +49,7 @@ class UserService
     {
         try {
             return User::with(['address', 'contacts', 'files'])->findOrFail($id);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             Log::error('Failed to retrieve user', [
                 'id'        => $id,
                 'exception' => $e->getMessage(),
@@ -72,7 +72,7 @@ class UserService
             }
 
             return null;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             Log::error('Failed to retrieve user', [
                 'email'     => $email,
                 'exception' => $e->getMessage(),
@@ -88,8 +88,18 @@ class UserService
     public function getAllUsers(int $perPage = 15): ?LengthAwarePaginator
     {
         try {
-            return User::paginate($perPage);
-        } catch (\Exception $e) {
+            return User::with(
+                [
+                    'address',
+                    'contacts' => function ($query) {
+                        $query->orderBy('name', 'asc');
+                    },
+                    'files'    => function ($query) {
+                        $query->orderBy('original_name', 'asc');
+                    }
+                ]
+            )->paginate($perPage);
+        } catch (\Throwable $e) {
             Log::error('Failed to retrieve users', [
                 'perPage'   => $perPage,
                 'exception' => $e->getMessage(),

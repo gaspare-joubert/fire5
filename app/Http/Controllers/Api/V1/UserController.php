@@ -7,6 +7,7 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\UserResourceCollection;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -46,17 +47,23 @@ class UserController extends Controller
         }
 
         // Return users as a resource collection
+        $userCollection = new UserResourceCollection($users);
+
         return response()->json(
             [
-                'status' => __('messages.status_success'),
+                'status' => $userCollection->hasProcessingErrors() ? __('messages.status_error') :
+                    __('messages.status_success'),
                 'data'   => [
-                    'users' => UserResource::collection($users)
+                    'users' => $userCollection
                 ],
                 'meta'   => [
-                    'current_page' => $users->currentPage(),
-                    'last_page'    => $users->lastPage(),
-                    'per_page'     => $users->perPage(),
-                    'total'        => $users->total()
+                    'current_page'  => $users->currentPage(),
+                    'last_page'     => $users->lastPage(),
+                    'per_page'      => $users->perPage(),
+                    'total'         => $users->total(),
+                    'has_errors'    => $userCollection->hasProcessingErrors(),
+                    'error_message' => $userCollection->hasProcessingErrors() ?
+                        __('messages.resource.collection_error') : null
                 ]
             ],
             200
