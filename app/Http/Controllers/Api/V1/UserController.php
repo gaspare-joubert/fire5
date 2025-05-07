@@ -192,11 +192,11 @@ class UserController extends Controller
      *
      * @param Request $request
      *
-     * @return UserResource
+     * @return UserResourceCollection
      */
-    public function currentUser(Request $request): UserResource
+    public function currentUser(Request $request): UserResourceCollection
     {
-        return new UserResource($request->user());
+        return new UserResourceCollection([$this->userService->getById($request->user()->id)]);
     }
 
     /**
