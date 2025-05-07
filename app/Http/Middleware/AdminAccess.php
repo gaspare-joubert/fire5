@@ -15,7 +15,7 @@ class AdminAccess
     public function handle(Request $request, Closure $next): Response
     {
         if (!Gate::allows('admin')) {
-            abort(403, __('messages.users.action_unauthorized'));
+            abort(403, __('messages.user.action_unauthorized'));
         }
 
         return $next($request);
