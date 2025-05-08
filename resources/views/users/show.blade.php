@@ -1,6 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
+    @php
+        $isAdmin = auth()?->user()?->isAdmin() ?? false;
+        $breadcrumbs = [];
+
+        if ($isAdmin) {
+            $breadcrumbs[__('messages.breadcrumbs.users')] = route('web.admin.users.index');
+            $breadcrumbs[__('messages.breadcrumbs.user_details')] = '';
+        }
+    @endphp
+
+    @include('partials._breadcrumbs', ['breadcrumbs' => $breadcrumbs])
+
     <section class="bg-gray-50 dark:bg-gray-900">
         <div class="flex flex-col items-center justify-center px-6 py-6 mx-auto md:h-screen lg:py-0 max-w-screen-md">
             <a href="{{ url('/') }}" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">

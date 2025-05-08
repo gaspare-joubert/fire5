@@ -116,4 +116,13 @@ return [
         'collection_error'    => 'Some resources could not be processed',
         'contacts_load_error' => 'Unable to load contacts data',
     ],
+
+    // Breadcrumbs
+    'breadcrumbs' => [
+        'home' => 'Home',
+        'users' => 'Users',
+        'profile' => 'Profile',
+        'edit_user' => 'Edit User',
+        'user_details' => 'User Details',
+    ],
 ];

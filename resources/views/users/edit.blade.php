@@ -1,6 +1,21 @@
 @extends('layouts.app')
 
 @section('content')
+    @php
+        $isAdmin = auth()?->user()?->isAdmin() ?? false;
+        $breadcrumbs = [];
+
+        if ($isAdmin) {
+            $breadcrumbs[__('messages.breadcrumbs.users')] = route('web.admin.users.index');
+        } else {
+            $breadcrumbs[__('messages.breadcrumbs.profile')] = route('web.users.show', ['id' => request()?->route('id') ?? '' ]);
+        }
+
+        $breadcrumbs[__('messages.breadcrumbs.edit_user')] = '';
+    @endphp
+
+    @include('partials._breadcrumbs', ['breadcrumbs' => $breadcrumbs])
+
     <section class="bg-gray-50 dark:bg-gray-900">
         <div
             class="flex flex-col items-center justify-center px-6 py-6 mx-auto max-h-screen overflow-hidden lg:py-0 max-w-screen-md">
