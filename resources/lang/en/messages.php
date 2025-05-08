@@ -44,6 +44,16 @@ return [
     'size'                     => 'Size',
     'files'                    => 'Files',
     'bytes'                    => 'bytes',
+    'notification'             => 'Notification',
+    'close_modal'              => 'Close modal',
+    'ok'                       => 'OK',
+    'modal_error_title'        => 'Error',
+    'modal_success_title'      => 'Success',
+    'default_error_message'    => 'An error occurred while processing your request.',
+    'delete'                   => 'Delete',
+    'modal_init_success'       => 'Modal initialized successfully',
+    'modal_init_error'         => 'Error initializing modal:',
+    'modal_deleting'           => 'Deleting...',
 
     // User Controller Messages
     'user'                     => [
@@ -101,9 +111,9 @@ return [
 
     // Resource Processing Messages
     'resource'                 => [
-        'address_load_error' => 'Unable to load address data',
-        'process_error'      => 'Error processing resource',
-        'collection_error'   => 'Some resources could not be processed',
+        'address_load_error'  => 'Unable to load address data',
+        'process_error'       => 'Error processing resource',
+        'collection_error'    => 'Some resources could not be processed',
         'contacts_load_error' => 'Unable to load contacts data',
     ],
 ];

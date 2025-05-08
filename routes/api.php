@@ -31,6 +31,7 @@ Route::prefix('v1')->group(function () {
         Route::middleware(['user.admin'])->prefix('admin')->group(function () {
             Route::get('users', [UserController::class, 'index']);
             Route::patch('users/{id}', [UserController::class, 'update']);
+            Route::delete('users/{id}', [UserController::class, 'destroy']);
         });
 
         // User resource routes with ownership check

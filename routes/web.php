@@ -28,6 +28,7 @@ Route::middleware(['user.auth'])->group(function () {
     // Admin routes
     Route::middleware(['user.admin'])->prefix('admin')->group(function () {
         Route::get('users', [UserController::class, 'index'])->name('web.admin.users.index');
+        Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('web.admin.users.destroy');
     });
 
     // User routes with ownership check
@@ -36,6 +37,5 @@ Route::middleware(['user.auth'])->group(function () {
         Route::get('/users/{id}', [UserController::class, 'show'])->name('web.users.show');
         Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('web.users.edit');
         Route::match(['put', 'patch'], '/users/{id}', [UserController::class, 'update'])->name('web.users.update');
-        Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('web.users.destroy');
     });
 });

@@ -39,7 +39,6 @@
 @section('scripts')
     <script>
         window.fileUploadFormAction = '{{ route('files.upload') }}';
-        window.csrfToken = '{{ csrf_token() }}';
         window.uploadErrorMessage = '{{ __('messages.file.upload_error') }}';
         window.statusSuccess = '{{ __('messages.status_success') }}';
     </script>

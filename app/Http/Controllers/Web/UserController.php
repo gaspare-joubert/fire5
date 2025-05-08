@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\UserStoreRequest;
+use App\Http\Resources\UserResource;
 use App\Services\UserService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -174,9 +176,44 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id, Request $request): JsonResponse
     {
-        //
+        $user = $this->userService->getById($id);
+
+        if (!$user) {
+            if ($request->wantsJson()) {
+                return response()->json(
+                    [
+                        'status'  => __('messages.status_error'),
+                        'message' => __('messages.user.account_not_found'),
+                        'data'    => null
+                    ],
+                    404
+                );
+            }
+        }
+
+        // Delete user (all related deletions are handled via DB cascades and model events)
+        $deletedUser = $this->userService->delete($id);
+
+        $response = new JsonResponse();
+
+        if ($request->wantsJson()) {
+            $response = response()->json(
+                [
+                    'status'  => __('messages.status_success'),
+                    'message' => __('messages.user.deleted'),
+                    'data'    => [
+                        'user' => new UserResource(
+                            $deletedUser
+                        ),
+                    ]
+                ],
+                200
+            );
+        }
+
+        return $response;
     }
 
     /**
