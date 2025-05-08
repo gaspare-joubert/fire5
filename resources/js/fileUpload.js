@@ -15,6 +15,12 @@ export default function setupFileUpload() {
         uploadStatus.textContent = '';
 
         try {
+            // Show loading state
+            document.body.style.cursor = 'wait';
+            this.style.cursor = 'wait';
+            this.classList.add('opacity-50');
+            this.disabled = true;
+
             // Send the file upload request
             const response = await fetch(window.fileUploadFormAction, {
                 method: 'POST',
@@ -73,6 +79,12 @@ export default function setupFileUpload() {
             console.error('Error:', error);
             uploadStatus.className = 'block p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400';
             uploadStatus.textContent = window.uploadErrorMessage;
+        } finally {
+            // Reset everything back to normal
+            document.body.style.cursor = 'default';
+            this.style.cursor = 'pointer';
+            this.classList.remove('opacity-50');
+            this.disabled = false;
         }
     });
 }
