@@ -1,4 +1,4 @@
-<!-- resources/views/partials/user-fields.blade.php -->
+<!-- resources/views/partials/_user-fields.blade.php -->
 
 <div>
     <label for="name"

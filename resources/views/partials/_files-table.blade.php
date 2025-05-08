@@ -1,4 +1,4 @@
-<!-- resources/views/partials/files-table.blade.php -->
+<!-- resources/views/partials/_files-table.blade.php -->
 
 <div class="pt-4">
     <h2 class="text-lg font-medium leading-tight tracking-tight text-gray-900 mb-4 dark:text-white">

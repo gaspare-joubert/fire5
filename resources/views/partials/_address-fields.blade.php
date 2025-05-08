@@ -1,4 +1,4 @@
-<!-- resources/views/partials/address-fields.blade.php -->
+<!-- resources/views/partials/_address-fields.blade.php -->
 
 <div>
     <label for="address_line_1"
