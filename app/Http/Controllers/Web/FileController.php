@@ -21,7 +21,7 @@ class FileController extends Controller
     /**
      * Store uploaded files
      */
-    public function store(FileStoreRequest $request): JsonResponse
+    public function store(FileStoreRequest $request, int|null|string $id): JsonResponse
     {
         $uploadedFiles = [];
 
@@ -32,7 +32,7 @@ class FileController extends Controller
 
             $uploadedFiles = $this->fileService->storeFiles(
                 $filesArray,
-                auth()->id()
+                $id
             );
         }
 

@@ -180,9 +180,36 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): JsonResponse
     {
-        //
+        $user = $this->userService->getById($id);
+
+        if (!$user) {
+            return response()->json(
+                [
+                    'status'  => __('messages.status_error'),
+                    'message' => __('messages.user.account_not_found'),
+                    'data'    => null
+                ],
+                404
+            );
+        }
+
+        // Delete user (all related deletions are handled via DB cascades and model events)
+        $deletedUser = $this->userService->delete($id);
+
+        return response()->json(
+            [
+                'status'  => __('messages.status_success'),
+                'message' => __('messages.user.deleted'),
+                'data'    => [
+                    'user'  => new UserResource(
+                        $deletedUser
+                    ),
+                ]
+            ],
+            200
+        );
     }
 
     /**
@@ -212,7 +239,7 @@ class UserController extends Controller
                     'message' => __('messages.user.account_not_found'),
                     'data'    => null
                 ],
-                401
+                404
             );
         }
 

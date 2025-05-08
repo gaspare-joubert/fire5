@@ -172,4 +172,34 @@ class UserService
             $data['password'] = Hash::make($data['password']);
         }
     }
+
+    /**
+     * Delete a user by ID.
+     */
+    public function delete(string $id): ?User
+    {
+        $user = $this->getById($id);
+
+        if (!$user) {
+            return null;
+        }
+
+        try {
+            // User deletion triggers the model's 'deleting' event to:
+            // 1. Clean up associated files from storage
+            // 2. Remove orphaned contacts
+            // 3. Broadcast UserDeleted event
+            // See DELETION_STRATEGY.md for detailed explanation and rationale
+            $user->delete();
+
+            return $user;
+        } catch (\Throwable $e) {
+            Log::error('Failed to delete user', [
+                'id'        => $id,
+                'exception' => $e->getMessage(),
+            ]);
+
+            return null;
+        }
+    }
 }

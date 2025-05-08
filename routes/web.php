@@ -23,11 +23,12 @@ Route::middleware(['user.auth'])->group(function () {
     Route::post('/logout', [UserController::class, 'logout'])->name('web.users.logout');
 
     // File routes
-    Route::post('/files/upload', [FileController::class, 'store'])->name('files.upload');
+    Route::post('/users/{id}/files', [FileController::class, 'store'])->name('web.users.files.store');
 
     // Admin routes
     Route::middleware(['user.admin'])->prefix('admin')->group(function () {
         Route::get('users', [UserController::class, 'index'])->name('web.admin.users.index');
+        Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('web.admin.users.destroy');
     });
 
     // User routes with ownership check
@@ -36,6 +37,5 @@ Route::middleware(['user.auth'])->group(function () {
         Route::get('/users/{id}', [UserController::class, 'show'])->name('web.users.show');
         Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('web.users.edit');
         Route::match(['put', 'patch'], '/users/{id}', [UserController::class, 'update'])->name('web.users.update');
-        Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('web.users.destroy');
     });
 });

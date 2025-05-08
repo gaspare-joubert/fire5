@@ -65,6 +65,16 @@ return [
             'root' => storage_path('app/secure'),
             'url' => env('APP_URL').'/secure',
             'visibility' => 'private',
+            'permissions' => [
+                'file' => [
+                    'public' => 0644,
+                    'private' => 0644,   // Allow your web user to read/write
+                ],
+                'dir' => [
+                    'public' => 0755,
+                    'private' => 0755,   // Allow your web user to traverse/list
+                ],
+            ],
         ],
 
     ],
