@@ -23,7 +23,7 @@ Route::middleware(['user.auth'])->group(function () {
     Route::post('/logout', [UserController::class, 'logout'])->name('web.users.logout');
 
     // File routes
-    Route::post('/files/upload', [FileController::class, 'store'])->name('files.upload');
+    Route::post('/users/{id}/files', [FileController::class, 'store'])->name('web.users.files.store');
 
     // Admin routes
     Route::middleware(['user.admin'])->prefix('admin')->group(function () {
