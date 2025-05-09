@@ -3,6 +3,7 @@ import 'flowbite';
 import Alpine from 'alpinejs';
 import setupFileUpload from './fileUpload';
 import setupUserActions from './userActions';
+import setupAlertHandler from './alert-handler';
 
 window.Alpine = Alpine
 Alpine.start()
@@ -17,7 +18,9 @@ window.modalInitSuccess = window.AppTranslations.modalInitSuccess;
 window.modalInitError = window.AppTranslations.modalInitError;
 window.modalDeleting = window.AppTranslations.modalDeleting;
 
+// Initialize components
 document.addEventListener('DOMContentLoaded', function () {
     setupFileUpload();
     setupUserActions();
+    setupAlertHandler();
 });
