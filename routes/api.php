@@ -19,7 +19,6 @@ Route::prefix('v1')->group(function () {
 
         // User registration
         Route::post('users', [UserController::class, 'store']);
-        Route::get('users/create', [UserController::class, 'create']);
     });
 
     // Protected routes group
@@ -36,7 +35,7 @@ Route::prefix('v1')->group(function () {
 
         // User resource routes with ownership check
         Route::middleware(['user.ownership'])->group(function () {
-            Route::apiResource('users', UserController::class)->except(['store', 'create', 'index']);
+            Route::apiResource('users', UserController::class)->except(['store', 'index']);
         });
     });
 });
