@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
         // Create 4 regular unverified users with known password
         User::factory()->count(4)->unverified()->state(
             [
-                'password' => Hash::make('password')
+                'password' => Hash::make('StrongP@ssw0rd123')
             ]
         )->create();
 
@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
         User::factory()->unverified()->state(
             [
                 'is_admin' => true,
-                'password' => Hash::make('adminpassword'),
+                'password' => Hash::make('Admin@P4ssw0rd!2023'),
                 'email'    => 'admin@example.com' // Optional: set a predictable email
             ]
         )->create();
