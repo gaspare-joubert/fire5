@@ -20,8 +20,17 @@ class FileFactory extends Factory
     public function definition(): array
     {
         $content = fake()->paragraphs(3, true);
+
+        if (is_iterable($content)) {
+            // If it's iterable (like a Generator or array), convert it to an array and then implode
+            $contentArray = iterator_to_array($content);
+            $contentString = implode("\n", $contentArray);
+        } else {
+            $contentString = $content;
+        }
+
         $filename = Str::uuid() . '.txt';
-        Storage::disk('secure')->put($filename, $content);
+        Storage::disk('secure')->put($filename, $contentString);
         $size = Storage::disk('secure')->size($filename);
 
         return [

@@ -11,16 +11,13 @@ class PasswordRules
      */
     private static function baseRule(): Password
     {
-        return Password::min(12)
-            ->letters()
-            ->mixedCase()
-            ->numbers()
-            ->symbols()
-            ->uncompromised();
+        return Password::min(12)->letters()->mixedCase()->numbers()->symbols()->uncompromised();
     }
 
     /**
      * The default required password rules.
+     *
+     * @return array<int, string|Password>
      */
     public static function default(): array
     {
@@ -33,6 +30,8 @@ class PasswordRules
 
     /**
      * The confirmed password rules.
+     *
+     * @return array<int, string|Password>
      */
     public static function confirmed(): array
     {
@@ -46,6 +45,8 @@ class PasswordRules
 
     /**
      * The password rules for updating a user's password.
+     *
+     * @return array<int, string|Password>
      */
     public static function update(): array
     {

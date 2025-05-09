@@ -15,11 +15,13 @@ class UserResourceCollection extends SafeResourceCollection
 
     /**
      * Transform the resource collection into an array.
+     *
+     * @return array<string, mixed>
      */
     public function toArray(Request $request): array
     {
         return [
-            'data' => $this->collection,
+            'data'   => $this->collection,
             'errors' => $this->hasProcessingErrors() ? $this->getProcessingErrors() : null
         ];
     }

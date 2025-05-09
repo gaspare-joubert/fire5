@@ -27,6 +27,8 @@ class FileResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
+     *
+     * @return array<string, int|string>
      */
     public function toArray(Request $request): array
     {

@@ -21,7 +21,7 @@ class FileController extends Controller
     /**
      * Store uploaded files
      */
-    public function store(FileStoreRequest $request, int|null|string $id): JsonResponse
+    public function store(FileStoreRequest $request, int $id): JsonResponse
     {
         $uploadedFiles = [];
 

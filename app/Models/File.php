@@ -2,12 +2,17 @@
 
 namespace App\Models;
 
+use Database\Factories\FileFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @method static FileFactory factory(...$parameters)
+ */
 class File extends Model
 {
+    /** @use HasFactory<FileFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -29,7 +34,11 @@ class File extends Model
         'updated_at' => 'datetime',
     ];
 
-
+    /**
+     * Get the user that owns the file.
+     *
+     * @return BelongsTo<User, $this>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

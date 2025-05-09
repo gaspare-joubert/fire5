@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use AllowDynamicProperties;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Log;
     /**
      * Stores any errors that occur during resource processing.
      *
-     * @var array
+     * @var array<int, array<string, mixed>>
      */
     protected array $processingErrors = [];
 
@@ -21,7 +22,15 @@ use Illuminate\Support\Facades\Log;
      */
     public function __construct(mixed $resource)
     {
-        $this->collects = $this->collects();
+        $collects = $this->collects();
+
+        // Make sure we have a valid string resource class
+        if ($collects !== null) {
+            $this->collects = $collects;
+        } else {
+            // Provide a default if collects() returns null
+            $this->collects = JsonResource::class;
+        }
 
         // Safely collect resources
         $safeResources = $this->collectResources($resource);
@@ -31,10 +40,12 @@ use Illuminate\Support\Facades\Log;
 
     /**
      * Safely collect resources with error handling
+     *
+     * @return Collection<int, mixed>
      */
     protected function collectResources(mixed $resource): Collection
     {
-        $collects = $this->collects();
+        $collects = $this->collects;
 
         $resources = [];
         $errors = [];
@@ -63,6 +74,8 @@ use Illuminate\Support\Facades\Log;
 
     /**
      * Get any errors that occurred during processing
+     *
+     * @return array<int, array<string, mixed>>
      */
     public function getProcessingErrors(): array
     {
