@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\CSP\Policies\LocalDevelopmentPolicy;
+use App\CSP\Policies\ProductionPolicy;
 use App\Models\User;
 use App\Services\FileService;
 use Illuminate\Support\Facades\Gate;
@@ -17,6 +19,14 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(FileService::class, function ($app) {
             return new FileService();
         });
+
+        // Register environment-specific CSP policy
+        $this->app->bind('csp-policy', function ($app) {
+            return $app->environment('local')
+                ? new LocalDevelopmentPolicy()
+                : new ProductionPolicy();
+        });
+
     }
 
     /**
