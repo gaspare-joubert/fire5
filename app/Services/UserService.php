@@ -19,6 +19,8 @@ class UserService
 {
     /**
      * Create a new user
+     *
+     * @param array<string, string> $data User data with keys 'name', 'email', and 'password'
      */
     public function store(array $data): ?User
     {
@@ -84,6 +86,8 @@ class UserService
 
     /**
      * Get all users with pagination
+     *
+     * @return LengthAwarePaginator<int, User>|null
      */
     public function getAllUsers(int $perPage = 15): ?LengthAwarePaginator
     {
@@ -112,7 +116,7 @@ class UserService
     /**
      * Update the specified user with an array of field-value pairs.
      *
-     * @param array $data Associative array of field-value pairs to update
+     * @param array<string, mixed> $data Associative array of field-value pairs to update
      */
     public function update(string $id, array $data): ?User
     {
@@ -129,42 +133,44 @@ class UserService
                 ]
             )->findOrFail($id);
 
-            // Handle special fields that need processing before update
-            $this->processSpecialFields($data);
+        // Handle special fields that need processing before update
+        $this->processSpecialFields($data);
 
-            // Perform the update with all field-value pairs
-            $user->update($data);
-            if ($user->address) {
-                $user->address->update($data);
-            } else {
-                // Create a new address for the user
-                $user->address()->create($data);
-            }
-
-            return $user;
-
-        } catch (ModelNotFoundException|\Exception $e) {
-            if ($e instanceof ModelNotFoundException) {
-                Log::info('User not found during update: ', [
-                    'user_id' => $id,
-                ]);
-            } else {
-                // Create a safe version of data without the password
-                $safeData = $data;
-                unset($safeData['password']);
-
-                Log::error('Failed to update user', [
-                    'data'      => $safeData,
-                    'exception' => $e->getMessage(),
-                ]);
-            }
-
-            return null;
+        // Perform the update with all field-value pairs
+        $user->update($data);
+        if ($user->address) {
+            $user->address->update($data);
+        } else {
+            // Create a new address for the user
+            $user->address()->create($data);
         }
+
+        return $user;
+
+    } catch (ModelNotFoundException|\Exception $e) {
+        if ($e instanceof ModelNotFoundException) {
+            Log::info('User not found during update: ', [
+                'user_id' => $id,
+            ]);
+        } else {
+            // Create a safe version of data without the password
+            $safeData = $data;
+            unset($safeData['password']);
+
+            Log::error('Failed to update user', [
+                'data'      => $safeData,
+                'exception' => $e->getMessage(),
+            ]);
+        }
+
+        return null;
     }
+}
 
     /**
      * Process special fields that need transformation before update.
+     *
+     * @param array<string, mixed> &$data Associative array of user data that may contain special fields
      */
     private function processSpecialFields(array &$data): void
     {

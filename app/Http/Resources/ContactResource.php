@@ -25,7 +25,7 @@ class ContactResource extends JsonResource
      *
      * @param Request $request
      *
-     * @return array
+     * @return array<string, int|string>
      */
     public function toArray(Request $request): array
     {

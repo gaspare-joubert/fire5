@@ -125,9 +125,9 @@ class UserController extends Controller
      * Update the specified resource in storage.
      * Handles both PUT (full update) and PATCH (partial update).
      */
-    public function update(UserRequest $request, string $id)
+    public function update(UserRequest $request, string $id): RedirectResponse
     {
-        $isAdmin = $request->user()->isAdmin();
+        $isAdmin = $request->user()?->isAdmin() ?? false;
 
         // Get validated data
         $data = $request->validated();

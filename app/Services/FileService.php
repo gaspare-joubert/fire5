@@ -19,7 +19,7 @@ class FileService
     /**
      * Store a single uploaded file
      */
-    public function storeFile(UploadedFile $uploadedFile, int $userId)
+    public function storeFile(UploadedFile $uploadedFile, int $userId): ?File
     {
         try {
             $filename = Str::uuid() . '.' . $uploadedFile->getClientOriginalExtension();
@@ -49,6 +49,9 @@ class FileService
 
     /**
      * Store multiple uploaded files
+     *
+     * @param array<int, UploadedFile> $files
+     * @return array<int, File|null>
      */
     public function storeFiles(array $files, int $userId): array
     {

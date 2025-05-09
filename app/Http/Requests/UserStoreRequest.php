@@ -11,6 +11,7 @@ namespace App\Http\Requests;
 
 use App\Rules\PasswordRules;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 
 class UserStoreRequest extends FormRequest
 {
@@ -27,7 +28,7 @@ class UserStoreRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, array<int, string|Password>|array<int, mixed>>
      */
     public function rules(): array
     {

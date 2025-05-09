@@ -11,6 +11,7 @@ namespace App\Http\Requests;
 
 use App\Rules\PasswordRules;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 
 class UserRequest extends FormRequest
 {
@@ -32,7 +33,7 @@ class UserRequest extends FormRequest
      * Ensure this email is unique in the users table's email column, EXCEPT for the record with the ID that matches
      * the current user being edited.
      *
-     * @return array
+     * @return array<string, array<int, string|Password>>
      */
     public function rules(): array
     {

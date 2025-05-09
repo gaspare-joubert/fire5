@@ -2,12 +2,17 @@
 
 namespace App\Models;
 
+use Database\Factories\ContactFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * @method static ContactFactory factory(...$parameters)
+ */
 class Contact extends Model
 {
+    /** @use HasFactory<ContactFactory> */
     use HasFactory;
 
     /**
@@ -22,7 +27,9 @@ class Contact extends Model
     ];
 
     /**
-     * The users that have this contact.
+     * Get the users associated with the contact.
+     *
+     * @return BelongsToMany<User, $this>
      */
     public function users(): BelongsToMany
     {

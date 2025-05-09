@@ -32,6 +32,8 @@ class UserResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
+     *
+     * @return array<string, mixed>
      */
     public function toArray(Request $request): array
     {
@@ -62,6 +64,8 @@ class UserResource extends JsonResource
 
     /**
      * Safely add address data to the response
+     *
+     * @param array<string, mixed> $data
      */
     protected function addAddressData(array &$data): void
     {
@@ -95,6 +99,8 @@ class UserResource extends JsonResource
 
     /**
      * Safely add contacts data to the response
+     *
+     * @param array<string, mixed> $data
      */
     protected function addContactsData(array &$data): void
     {
@@ -127,18 +133,21 @@ class UserResource extends JsonResource
 
     /**
      * Safely add files data to the response
+     *
+     * @param array<string, mixed> $data
      */
     protected function addFilesData(array &$data): void
     {
         $emptyFile = [
-            'name'        => '',
-            'size'        => 0,
-            'mime_type'   => '',
+            'name'      => '',
+            'size'      => 0,
+            'mime_type' => '',
         ];
 
         // If no files relation is loaded or files is null, return empty array
         if (!$this->relationLoaded('files') || !$this->files) {
             $data['files'] = [];
+
             return;
         }
 

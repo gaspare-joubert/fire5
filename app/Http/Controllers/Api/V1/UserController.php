@@ -110,20 +110,12 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      * Handles both PUT (full update) and PATCH (partial update).
      */
-    public function update(UserRequest $request, string $id)
+    public function update(UserRequest $request, string $id): JsonResponse
     {
-        $isAdmin = $request->user()->isAdmin();
+        $isAdmin = $request->user()?->isAdmin() ?? false;
 
         // Get validated data
         $data = $request->validated();
@@ -221,7 +213,7 @@ class UserController extends Controller
      */
     public function currentUser(Request $request): UserResourceCollection
     {
-        return new UserResourceCollection([$this->userService->getById($request->user()->id)]);
+        return new UserResourceCollection([$this->userService->getById($request->user()?->id)]);
     }
 
     /**

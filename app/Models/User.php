@@ -9,12 +9,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @method static UserFactory factory(...$parameters)
+ */
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
@@ -66,6 +70,8 @@ class User extends Authenticatable
 
     /**
      * Get the address associated with the user.
+     *
+     * @return HasOne<Address, $this>
      */
     public function address(): HasOne
     {
@@ -74,6 +80,8 @@ class User extends Authenticatable
 
     /**
      * Get the contacts associated with the user.
+     *
+     * @return BelongsToMany<Contact, $this, Pivot>
      */
     public function contacts(): BelongsToMany
     {
@@ -82,6 +90,8 @@ class User extends Authenticatable
 
     /**
      * Get the files associated with the user.
+     *
+     * @return HasMany<File, $this>
      */
     public function files(): HasMany
     {

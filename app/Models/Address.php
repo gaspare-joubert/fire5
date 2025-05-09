@@ -2,12 +2,17 @@
 
 namespace App\Models;
 
+use Database\Factories\AddressFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @method static AddressFactory factory(...$parameters)
+ */
 class Address extends Model
 {
+    /** @use HasFactory<AddressFactory> */
     use HasFactory;
 
     /**
@@ -25,6 +30,8 @@ class Address extends Model
 
     /**
      * Get the user that owns the address.
+     *
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {

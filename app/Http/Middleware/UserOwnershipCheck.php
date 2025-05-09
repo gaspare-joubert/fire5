@@ -15,8 +15,12 @@ class UserOwnershipCheck
     {
         $currentUser = $request->user();
 
+        if (!$currentUser) {
+            abort(401, __('messages.user.access_unauthorized'));
+        }
+
         // Allow admins to access any user route
-        if ($currentUser && $currentUser->isAdmin()) {
+        if ($currentUser->isAdmin()) {
             return $next($request);
         }
 
@@ -24,7 +28,7 @@ class UserOwnershipCheck
         $routeId = $request->route('id') ?? $request->route('user');
 
         // If no ID in route, or it's the current user's ID, proceed
-        if (!$routeId || $currentUser->id == $routeId) {
+        if (!$routeId || $currentUser->id === (int)$routeId) {
             return $next($request);
         }
 
