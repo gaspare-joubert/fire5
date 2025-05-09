@@ -9,6 +9,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\PasswordRules;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserRequest extends FormRequest
@@ -45,7 +46,7 @@ class UserRequest extends FormRequest
                     'unique:users,email,' . $this->route('id')
                 ],
                 'email_verified_at' => ['required', 'date'],
-                'password'          => ['required', 'string', 'min:8'],
+                'password'          => PasswordRules::default(),
                 'remember_token'    => ['required', 'string', 'max:100'],
                 'is_admin'          => ['required', 'boolean'],
             ];
@@ -61,7 +62,7 @@ class UserRequest extends FormRequest
                 'unique:users,email,' . $this->route('id')
             ],
             'email_verified_at' => ['sometimes', 'nullable', 'date'],
-            'password'          => ['sometimes', 'string', 'min:8'],
+            'password'          => PasswordRules::update(),
             'remember_token'    => ['sometimes', 'nullable', 'string', 'max:100'],
             'is_admin'          => ['sometimes', 'boolean'],
 
