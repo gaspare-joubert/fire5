@@ -1,6 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
+    @php
+        $breadcrumbs = [];
+
+        $breadcrumbs[__('messages.breadcrumbs.users')] = '';
+    @endphp
+
+    @include('partials._breadcrumbs', ['breadcrumbs' => $breadcrumbs])
+
     <section class="bg-gray-50 dark:bg-gray-900">
         <div class="flex flex-col items-center justify-center px-6 py-6 mx-auto max-h-screen overflow-hidden lg:py-0 max-w-screen-xl">
             <a href="{{ url('/') }}"
