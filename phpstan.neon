@@ -7,7 +7,7 @@ parameters:
         - config
         - database
         - routes
-    level: 5
+    level: 8
     ignoreErrors:
         # Add any error patterns to ignore here if needed
     excludePaths:
