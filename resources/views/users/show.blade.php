@@ -7,8 +7,9 @@
 
         if ($isAdmin) {
             $breadcrumbs[__('messages.breadcrumbs.users')] = route('web.admin.users.index');
-            $breadcrumbs[__('messages.breadcrumbs.profile')] = '';
         }
+
+        $breadcrumbs[__('messages.breadcrumbs.profile')] = '';
     @endphp
 
     @include('partials._breadcrumbs', ['breadcrumbs' => $breadcrumbs])
